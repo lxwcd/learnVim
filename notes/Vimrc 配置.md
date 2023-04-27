@@ -21,7 +21,7 @@
 ![7](https://img-blog.csdnimg.cn/a70cfd49a5294749b480befda8c9d033.png)
 
 # 用户自定义配置文件
-
+- 环境：vim 8.2 版本
 - 在 vim 中输入 `:h vimrc` 可查看，一般将自定义的文件放在 `$HOME` 路径下，即家目录，文件名为 `.vimrc`；或者 `$HOME/.vim/vimrc`。
 ![1](https://img-blog.csdnimg.cn/9ff729bbd82c45a58ca69535f31808ee.png)
 - 进入家目录，新建一个文件 `.vimrc`，进入 vim，输入 `:echo $MYVIMRC` 可以看见自定义配置文件的路径
@@ -32,10 +32,44 @@
 - 如自定义的配置文件在 `~/.vim/vimrc` 中，则将 `~/.vim` 文件夹拷到 `/etc/skel` 目录下，则新创建的普通用户 vimrc 文件相同
 
 ## 创建 `/etc/vim/vimrc.local` 文件
-- 查看 `/etc/vim/vimrc` 文件，最后会调用 `/etc/vim/vimrc.local`，这个文件默认没有，因此创建自定义的 vimrc 名字改为 `vimrc.local` 放在该目录下，则 root 登录时也可以使用自定义配置
-- 这种方式还需做一些处理，如果在 vimrc 文件中使用 `$MYVIMRC` 变量，这种方式用不了  
+- vim 版本为 `version 8.0.1763`
+- vimrc 文件如下
+```bash
+   system vimrc file: "/etc/vimrc"
+     user vimrc file: "$HOME/.vimrc"
+ 2nd user vimrc file: "~/.vim/vimrc"
+      user exrc file: "$HOME/.exrc"
+       defaults file: "$VIMRUNTIME/defaults.vim"
+  fall-back for $VIM: "/etc"
+ f-b for $VIMRUNTIME: "/usr/share/vim/vim80"
+```
 
-![](img/2023-03-19-19-59-21.png)
+- 系统 vimrc 文件为 `/etc/vimrc`，初始执行的文件，后面执行的文件中有相同配置会覆盖此文件的设置
+- 执行完系统 vimrc 配置文件后，加载用户各自的配置文件
+默认没有该文件，为用户创建的自定义配置，有两种路径
+    - `$HOME/.vimrc`
+    - `~/.vim/vimrc`
+- 如果没有自定义的 vimrc 文件，则会执行 `$VIMRUNTIME/defaults.vim`，即使前面在 `/etc/vimrc` 中调用了 `/etc/vim/vimrc.local`，因此如果全局使用 `/etc/vim/vimrc.local` 文件，则需要禁用 `$VIMRUNTIME/defaults.vim` 文件，可以在 `$VIMRUNTIME/defaults.vim` 文件的最上面设置变量 `skip_defaults_vim` 变量，即 `let g:skip_defaults_vim = 1`
+```vim
+" $VIMRUNTIME/defaults.vim
+" prevent $VIMRUNTIME/defaults.vim from being loaded                                                                                      |a
+let g:skip_defaults_vim = 1    
+
+" Bail out if something that ran earlier, e.g. a system wide vimrc, does not                                                              |b
+" want Vim to use these default values.                                                                                                   |a
+if exists('skip_defaults_vim')                                                                                                            |s
+  finish                                                                                                                                  |e
+endif 
+```
+
+- 在 `/etc/vimrc` 文件最后加上下面内容，执行 `/etc/vim/vimrc.local` 文件
+创建 `/etc/vim/vimrc.local` 后文件中，将自定义的配置写入其中，可以让该配置全局生效，即所有用户使用  
+```vim
+" Source a global configuration file if available
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
+```
 
 
 # 自定义按键映射写法
