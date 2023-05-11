@@ -1,3 +1,6 @@
+" 设置全局自定义配置文件的路径变量
+let $MYVIMRC = "/etc/vim/vimrc.local"
+
 " 设置兼容模式，不兼容 vi
 set nocompatible
 
@@ -54,6 +57,14 @@ set cursorline
 " 显示匹配的括号
 set showmatch
 
+" 自动缩进
+" set autoindent
+
+" 复制时保留格式
+" set paste
+
+" 显示 Tab 和行结束符$
+" set list
 
 " 搜索高亮
 set hlsearch
@@ -65,7 +76,8 @@ set incsearch
 set statusline=%.20F\ -\ FileType:\ %y
 set statusline+=\ \ [%-4l]/[%-4L]
 
-
+" 加密
+" set key=passwd
 
 " 设置 Leader 键
 let mapleader = "\<Space>"
@@ -137,6 +149,7 @@ inoremap jk <Esc>
 
 " 缩写
 iabbrev @@ 15521168075@163.com
+iabbrev #! #!/bin/bash
 
 augroup bufRW
 	autocmd!
@@ -161,4 +174,23 @@ augroup filetype_vim
 	autocmd!
 	autocmd FileType vim setlocal foldmethod=marker
 augroup END
+
+" 插件管理 vim-plug
+"call plug#begin('~/.vim/plugged')
+
+" Gruvbox 主题
+"Plug 'gruvbox-community/gruvbox'
+
+" markdown 插件
+"Plug 'godlygeek/tabular' | Plug 'preservim/vim-markdown'
+"Plug 'mzlogin/vim-markdown-toc'
+"Plug 'dkarter/bullets.vim'
+" install with nodejs and yarn
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
+" install without nodejs and yarn
+"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+
+"call plug#end()
+
 
