@@ -52,7 +52,7 @@ set shiftwidth=4
 " 显示光标所在行
 set cursorline
 " 显示光标所在的列
-"set cursorcolumn
+" set cursorcolumn
 
 " 显示匹配的括号
 set showmatch
@@ -125,6 +125,11 @@ nnoremap <Leader>noh :set nohlsearch<Esc>
 nnoremap <Leader>is :set incsearch<Esc>
 nnoremap <Leader>nois :set noincsearch<Esc>
 
+" 不显示行号
+nnoremap <Leader>cp :set nonumber norelativenumber<Esc>
+
+" 显示行号
+nnoremap <Leader>sw :set number relativenumber<Esc>
 
 " 为单词加上双引号
 nnoremap <Leader>" viw<Esc>a"<Esc>hbi"<Esc>lel
