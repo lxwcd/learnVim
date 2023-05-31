@@ -8,24 +8,46 @@
 
 # 初始默认的 Vimrc 文件
 - 初始时用户没有自己的 Vimrc  文件，在 vim 中输入 `:version`，或者终端输入 `vim --version` 可以查看默认使用的 Vimrc 文件
-![1](https://img-blog.csdnimg.cn/655696bb12964b5891ea94221497b244.png)
- - 系统的 vimrc 文件的路径为 `$VIM/vimrc`，可以 vim 中输入 `:echo $VIM` 查看其路径
-![2](https://img-blog.csdnimg.cn/a2253142b3074824a993e609767a12c5.png)
- - vim 中输入 `:e $VIM/vimrc` 查看该文件，该文件是初始加载的文件
+```bash
+   system vimrc file: "$VIM/vimrc"
+     user vimrc file: "$HOME/.vimrc"
+ 2nd user vimrc file: "~/.vim/vimrc"
+      user exrc file: "$HOME/.exrc"
+```
+
+- 系统的 vimrc 文件的路径为 `$VIM/vimrc`，可以 vim 中输入 `:echo $VIM` 查看其路径
+```bash
+/usr/share/vim
+```
+
+- vim 中输入 `:e $VIM/vimrc` 查看该文件，该文件是初始加载的文件
 ![3](https://img-blog.csdnimg.cn/868565486ee841c396acbe5a06f16bd8.png)
+
+
 - `/usr/share/vim/vimrc` 是 `/etc/vim/vimrc` 的符号链接文件
-![4](https://img-blog.csdnimg.cn/8c5146e84b9f4b568da494fe39e6b608.png)
-- 如果用户没有自定义的 vimrc 文件，则会加载 `$VIMRUNTIME/defaults.vim` 文件，可以在 vim 中输入 `:e $VIMRUNTIME/defaults.vim` 查看
+```bash
+[root@ubuntu22-c0 ~]$ ll /usr/share/vim/vimrc
+lrwxrwxrwx 1 root root 14 Apr 18 19:40 /usr/share/vim/vimrc -> /etc/vim/vimrc
+```
+
+- 如果用户没有自定义的 vimrc 文件，则会加载 `$VIMRUNTIME/defaults.vim` 文件，
+  可以在 vim 中输入 `:e $VIMRUNTIME/defaults.vim` 查看，文件路径如下：
+```bash
+"/usr/share/vim/vim82/defaults.vim" 143L, 4568B 
+```
 ![5](https://img-blog.csdnimg.cn/90c7d762e91e4afbb2768dd02d7d90bc.png)
 ![6](https://img-blog.csdnimg.cn/9e053cd50f834e1aa7a43795bba8835c.png)
 ![7](https://img-blog.csdnimg.cn/a70cfd49a5294749b480befda8c9d033.png)
 
+
 # 用户自定义配置文件
 - 环境：vim 8.2 版本
-- 在 vim 中输入 `:h vimrc` 可查看，一般将自定义的文件放在 `$HOME` 路径下，即家目录，文件名为 `.vimrc`；或者 `$HOME/.vim/vimrc`。
+- 在 vim 中输入 `:h vimrc` 可查看，一般将自定义的文件放在 `$HOME` 路径下，即家目录，
+文件名为 `.vimrc`；或者 `$HOME/.vim/vimrc`。
 ![1](https://img-blog.csdnimg.cn/9ff729bbd82c45a58ca69535f31808ee.png)
 - 进入家目录，新建一个文件 `.vimrc`，进入 vim，输入 `:echo $MYVIMRC` 可以看见自定义配置文件的路径
 - 无自定义配置文件时，变量 `$MYVIMRC` 无值
+
 
 # 让自定义的 vimrc 对所有用户生效
 ## 将 vimrc 文件复制到 `/etc/skel/` 目录下
@@ -45,21 +67,51 @@
 ```
 
 - 系统 vimrc 文件为 `/etc/vimrc`，初始执行的文件，后面执行的文件中有相同配置会覆盖此文件的设置
+
 - 执行完系统 vimrc 配置文件后，加载用户各自的配置文件
 默认没有该文件，为用户创建的自定义配置，有两种路径
     - `$HOME/.vimrc`
     - `~/.vim/vimrc`
-- 如果没有自定义的 vimrc 文件，则会执行 `$VIMRUNTIME/defaults.vim`，即使前面在 `/etc/vimrc` 中调用了 `/etc/vim/vimrc.local`，因此如果全局使用 `/etc/vim/vimrc.local` 文件，则需要禁用 `$VIMRUNTIME/defaults.vim` 文件，可以在 `$VIMRUNTIME/defaults.vim` 文件的最上面设置变量 `skip_defaults_vim` 变量，即 `let g:skip_defaults_vim = 1`
-```vim
-" $VIMRUNTIME/defaults.vim
-" prevent $VIMRUNTIME/defaults.vim from being loaded                                                                                      |a
-let g:skip_defaults_vim = 1    
 
-" Bail out if something that ran earlier, e.g. a system wide vimrc, does not                                                              |b
-" want Vim to use these default values.                                                                                                   |a
-if exists('skip_defaults_vim')                                                                                                            |s
-  finish                                                                                                                                  |e
-endif 
+- 如果没有自定义的 vimrc 文件，则会执行 `$VIMRUNTIME/defaults.vim`，即使前面在 `/etc/vimrc` 中调用了 `/etc/vim/vimrc.local`，因此如果全局使用 `/etc/vim/vimrc.local` 文件，则需要禁用 `$VIMRUNTIME/defaults.vim` 文件，可以在 `$VIMRUNTIME/defaults.vim` 文件的最上面设置变量 `skip_defaults_vim` 变量，即 `let g:skip_defaults_vim = 1`
+```bash
+   " The default vimrc file.
+  1 "
+  2 " Maintainer:   Bram Moolenaar <Bram@vim.org>
+  3 " Last change:  2021 Nov 17
+  4 "
+  5 " This is loaded if no vimrc file was found.
+  6 " Except when Vim is run with "-u NONE" or "-C".
+  7 " Individual settings can be reverted with ":set option&".
+  8 " Other commands can be reverted as mentioned below.
+  9
+ 10 let g:skip_defaults_vim = 1
+ 11
+ 12 " When started as "evim", evim.vim will already have done these settings.
+ 13 if v:progname =~? "evim"
+ 14   finish
+ 15 endif
+ 16
+ 17 " Bail out if something that ran earlier, e.g. a system wide vimrc, does not
+ 18 " want Vim to use these default values.
+ 19 if exists('skip_defaults_vim')
+ 20   finish
+ 21 endif
+```
+
+vim 中命令行输入 `:h  defaults.vim` 查看说明：
+```bash
+defaults.vim E1187
+If Vim is started normally and no user vimrc file is found, the
+$VIMRUNTIME/defaults.vim script is loaded.  This will set 'compatible' off,
+switch on syntax highlighting and a few more things.  See the script for
+details.  NOTE: this is done since Vim 8.0, not in Vim 7.4. (it was added in
+patch 7.4.2111 to be exact).
+
+This should work well for new Vim users.  If you create your own .vimrc, it is
+recommended to add these lines somewhere near the top:
+        unlet! skip_defaults_vim
+        source $VIMRUNTIME/defaults.vim
 ```
 
 - 在 `/etc/vimrc` 文件最后加上下面内容，执行 `/etc/vim/vimrc.local` 文件

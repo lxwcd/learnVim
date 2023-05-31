@@ -560,6 +560,15 @@
 
 
 ## 与系统剪贴板互动
+> [Accessing the system clipboard](https://vim.fandom.com/wiki/Accessing_the_system_clipboard)
+
+
+需要安装 `vim-gtk` 
+
+
+
+
+
 ### 粘贴将系统剪贴板的内容
 
 ### 复制文档到系统剪贴板使用
