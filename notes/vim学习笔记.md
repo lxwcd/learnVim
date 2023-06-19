@@ -1,4 +1,6 @@
-﻿# Vim
+﻿Vim 学习
+
+# 资源
 > [How is NeoVim Different From Vim?](https://www.baeldung.com/linux/vim-vs-neovim)
 
 
@@ -230,7 +232,23 @@
 ![2](https://img-blog.csdnimg.cn/adb535f4e43d45e88af5a7a1c58fca65.png)
 ![3](https://img-blog.csdnimg.cn/7c77c5fece884f6090aa9e3259773f85.png)
 
+
 ## 批处理运行 Ex 命令
+
+
+
+## 用 root 权限保存 vim 修改的文档
+> [How does the vim "write with sudo" trick work?](https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work)
+
+普通用户编辑一个需要 root 权限的文档时，不能直接用 `:w` 保存，此时可以在命令行输入
+`:w !sudo tee % > /dev/null` 保存
+
+后面的 `> /dev/null` 将标准输出的内容不显示，因为 `tee` 命令会将当前 vim buffer 的内容显示到标准输出
+
+`%` 表示当前的文档名
+
+
+
 
 # 模式切换
 ## 插入模式下切换回普通模式
@@ -554,24 +572,40 @@
 
 ![1](https://img-blog.csdnimg.cn/e1626a83a7044ff6afc550b878d9b684.png)
 
-<br/>
 
-## vim 中不同文档之间复制粘贴
 
 
 ## 与系统剪贴板互动
 > [Accessing the system clipboard](https://vim.fandom.com/wiki/Accessing_the_system_clipboard)
 
+将系统剪贴板的内容复制到 vim 编辑的文档中，或者在不同的 vim 编辑的文档中复制粘贴
 
-需要安装 `vim-gtk` 
+- 需要安装 `vim-gtk` 
+
+例如 WLS ubuntu 20.04 中安装插件：
+```bash
+apt update && apt install -y vim-gtk
+```
+
+安装插件后，可以在用 vim 编辑一个文档时选择文本后复制到 `+` 寄存器中，
+如 `"+yy` 将当前行复制到系统剪贴板，随后可以在另一个文档中用 `"+p` 粘贴，
+或者到记事本等其他地方粘贴
+
+
+WLS ubuntu 22.04 中查看剪贴板
+```bash
+root@LAPTOP-VB238NKA:/etc/apt# vim --version | grep clipboard
++clipboard         +keymap            +printer           +vertsplit
++emacs_tags        +mouse_gpm         -sun_workshop      +xterm_clipboard
+```
+
+- `+` 和 `*` 寄存器的区别
+> [In Vim what is the difference between "+ and "* registers?](https://superuser.com/questions/624231/in-vim-what-is-the-difference-between-and-registers)
 
 
 
 
 
-### 粘贴将系统剪贴板的内容
-
-### 复制文档到系统剪贴板使用
 
 ## 粘贴时保留原格式
 
