@@ -1049,6 +1049,8 @@ root@LAPTOP-VB238NKA:/etc/apt# vim --version | grep clipboard
 
 # global 命令
 
+
+
 # 折叠命令
 ![1](https://img-blog.csdnimg.cn/08227f7c673c44aea3507bc0b5f2d08e.png)![2](https://img-blog.csdnimg.cn/0beca65f60fc4b1a8c8d8fe5d87d8991.png)
 
@@ -1103,3 +1105,33 @@ root@LAPTOP-VB238NKA:/etc/apt# vim --version | grep clipboard
 ```vim
 :let @a = expand("%")
 ```
+
+
+
+# 例子
+
+## 查询匹配的内容，高亮显示但不替换
+
+`:g/pattern/p`，如下查询 `${ }` 内容，不替换
+```vim
+: g/[^"]\${\([^}]*\)}/p
+```
+
+## 将 shell 脚本中的 ${} 的变量加上引号
+shell 脚本中，在 `[ ]` 中使用变量时，忘记加引号，容易引发一些错误，利用 vim 的查找替换加上引号：
+
+```vim
+:%s/[^"]\${\([^}]*\)}/ "\${\1}" /gc
+````
+
+加上 `c` 标识会在每个匹配的内容替换前询问
+```vim
+replace with  "\${\1}"  (y/n/a/q/l/^E/^Y)?
+```
+- `Press y` to replace the current occurrence.
+- `Press n` to skip the current occurrence.
+- `Press a` to replace all remaining occurrences without further prompting.
+- `Press q` to quit the substitution.
+- `Press l` to replace the current occurrence and then quit.
+- `Press Ctrl+E` to scroll up and display more context.
+- `Press Ctrl+Y` to scroll down and display more context.
