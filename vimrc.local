@@ -17,7 +17,6 @@ filetype indent on
 " 历史记录的数目
 set history=2000
 
-
 " 设置行号
 set number
 " 设置行号宽度
@@ -71,6 +70,18 @@ set hlsearch
 " 一边搜索一边高亮
 set incsearch
 
+" copy to clipboard: "+ y
+" set clipboard=unnamedplus
+
+" modify cursor style
+if &term =~ "xterm\\|rxvt"
+  " 设置插入模式下的光标样式为竖线
+  let &t_SI .= "\<Esc>[5 q"  " SI = INSERT mode
+  " 设置替换模式下的光标样式为竖线
+  let &t_SR .= "\<Esc>[5 q"  " SR = REPLACE mode
+  " 设置普通模式下的光标样式为块状
+  let &t_EI .= "\<Esc>[2 q"  " EI = NORMAL mode (ELSE)
+endif
 
 " 设置状态条
 set statusline=%.20F\ -\ FileType:\ %y
@@ -89,6 +100,8 @@ nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
 " 重读自定义配置文件，使之立即生效
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 
+
+
 " 保存文件
 nnoremap <Leader>w :write!<CR>
 nnoremap <Leader>wa :wa!<CR>
@@ -97,13 +110,11 @@ nnoremap <Leader>qa :qa!<CR>
 nnoremap <Leader>wq :wq!<CR>
 nnoremap <Leader>wqa :wqa!<CR>
 
-
 " 以 root 特权保存文件
 " nnoremap <Leader>ww :w !sudo tee % > /dev/null
 " nnoremap <Leader>ww :execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 " cnoremap w!! w !sudo tee % > /dev/null
-
 
 " 窗口操作
 nnoremap <Leader>wh <C-W>h
@@ -117,7 +128,6 @@ nnoremap <Leader>w= <C-W>=
 nnoremap <Leader>w_ <C-W>_
 " 窗口宽度调到最大 | 要转义
 nnoremap <Leader>w\| <C-W>\|
-
 
 nnoremap <Leader>wc <C-W>c
 nnoremap <Leader>wo <C-W>o
@@ -157,14 +167,11 @@ nnoremap <Leader>< viw<Esc>a><Esc>hbi<<Esc>lel
 " 删除行末尾空格，至少两个空格的有内容的行才处理
 nnoremap <Leader>d<Space> :%s/\v(\S)\s{2,}$/\1/g<Esc>
 
-
 " 插入模式切换为普通模式
 inoremap jk <Esc>
 
-
 " 宏录制，行末尾添加两个空格
 let @a = "A\<Space>\<Space>\<Esc>"
-
 
 " 缩写
 iabbrev @@ 15521168075@163.com
@@ -233,5 +240,4 @@ augroup END
 
 
 "call plug#end()
-
 
