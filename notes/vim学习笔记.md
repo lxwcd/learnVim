@@ -211,10 +211,10 @@
   
   
 ## 打开历史查找命令的窗口  
+- 输入 `:` 进入命令模式，按 Ctrl + f 打开历史命令窗口
 - `q/` 在普通模式查看历史查找命令  
 - `:q` 关闭该窗口  
 - `CTRL-F` 在命令行模式切换到命令行窗口  
-  
   
 ## 执行 Shell 中的程序  
 - `!ls` 执行 Shell 中的 `ls` 命令  
@@ -1059,19 +1059,48 @@ root@LAPTOP-VB238NKA:/etc/apt# vim --version | grep clipboard
   
 # global 命令  
   
-  
-  
 # 折叠命令  
 ![1](https://img-blog.csdnimg.cn/08227f7c673c44aea3507bc0b5f2d08e.png)![2](https://img-blog.csdnimg.cn/0beca65f60fc4b1a8c8d8fe5d87d8991.png)  
-  
   
 - `:h fold commands`  查看折叠命令  
 - 折叠命令以 `z` 开头，因为 `z` 从侧面看像这起来的纸  
 - 要设置折叠方案，`:h foldmethod` 查看帮助文档  
 ![3](https://img-blog.csdnimg.cn/c36de4a3b8ef4fcbbf5d27f3d66bf20d.png)  
-   
-<br/>  
-  
+
+- `zf`命令用于创建折叠(fold)，后面需要跟一个移动命令来指定折叠范围。例如，`zf20j`将从当前行开始，向下包括20行内容进行折叠。
+- `zd`命令用于删除光标所在行的折叠。(delete fold)
+- `zD`命令用于递归删除光标所在的折叠以及所有嵌套的折叠。
+- `zo`命令用于打开光标所在行的折叠。(open fold)
+- `zO`命令用于递归打开光标所在的折叠以及所有嵌套的折叠。
+- `zc`命令用于关闭光标所在行的折叠。(close fold)
+- `zC`命令用于递归关闭光标所在的折叠以及所有嵌套的折叠。
+- `za`命令用于切换光标所在行的折叠状态，如果折叠是打开的，则关闭它；如果折叠是关闭的，则打开它。
+- `zA`命令用于递归切换光标所在的折叠状态，以及所有嵌套的折叠。(toggle fold, at)
+- `zr`命令减少折叠的级别，使更多的文本可见。
+- `zR`命令完全打开所有折叠。 (reduce fold)
+- `zm`命令增加折叠的级别，减少可见的文本量。
+- `zM`命令关闭所有折叠。(More fold)
+
+### 设置折叠方法
+
+Vim提供了不同的折叠方法，可以通过设置`foldmethod`选项(`set fdm=`或`set foldmethod=`)来选择。以下是一些常用的折叠方法：
+
+- `manual`：手动创建折叠。`set fdm=manual`或`set foldmethod=manual`。
+- `indent`：根据缩进级别来创建折叠。`set fdm=indent`或`set foldmethod=indent`。
+- `syntax`：根据语法来创建折叠，需要语法文件支持。`set fdm=syntax`或`set foldmethod=syntax`。
+- `expr`：根据一个表达式来创建折叠，这允许更灵活的折叠方式。`set fdm=expr`或`set foldmethod=expr`。
+- `diff`：在查看差异时自动创建折叠。`set fdm=diff`或`set foldmethod=diff`。
+- `marker`：根据文本中的标记来创建折叠，这需要你在文本中放置特定的字符串来标记折叠的开始和结束。`set fdm=marker`或`set foldmethod=marker`。
+
+### 编辑和导航折叠
+
+在使用折叠时，你同样需要知道如何高效地在它们之间导航与编辑：
+
+- 使用`zj`和`zk`命令可以分别向下和向上移动到下一个或上一个折叠项。
+- 使用`:foldopen`和`:foldclose`命令可以打开或关闭光标下的折叠。
+- 在`normal`模式下，通过数字加上`zm`或`zr`可以更快地增减折叠级别。
+
+通过了解和使用上述命令与选项，你可以有效地管理大型文本文件中的视图，提高编码和阅读的效率。
   
 # list 模式：显示文本中结束符和制表符  
 ![1](https://img-blog.csdnimg.cn/ec88deb895b347c0b9c6d1aff3298bc7.png)![2](https://img-blog.csdnimg.cn/ec0da9b15c794822ad58da76dcdd21e9.png)  

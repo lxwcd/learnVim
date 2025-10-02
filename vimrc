@@ -1,0 +1,234 @@
+" 设置兼容模式，不兼容 vi
+set nocompatible
+
+" 语法高亮
+syntax enable
+syntax on
+
+" 文件类型检测
+filetype on
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" 历史记录的数目
+set history=2000
+
+
+" 设置行号
+set number
+" 设置行号宽度
+set numberwidth=4
+" 设置相对行号
+set relativenumber
+" 右下角显示当前光标位置的行和列
+set ruler
+" 显示当前模式，即插入模式等
+set showmode
+" 显示当前执行的命令
+set showcmd
+
+" 开启查询时高亮
+set incsearch
+" 查询时忽略大小写
+set ignorecase
+
+" 开启命令行自动补全
+set wildmenu
+
+" 文字超过长度换行
+set wrap
+
+" 空格代替制表符
+set expandtab
+" 设置tab宽度
+set tabstop=4
+" 设置缩进的宽度
+set shiftwidth=4
+
+" 显示光标所在行
+set cursorline
+" 显示光标所在的列
+" set cursorcolumn
+
+" 显示匹配的括号
+set showmatch
+
+" 自动缩进
+" set autoindent
+
+" 复制时保留格式
+" set paste
+
+" 显示 Tab 和行结束符$
+" set list
+
+" 搜索高亮
+set hlsearch
+" 一边搜索一边高亮
+set incsearch
+
+
+" 设置状态条
+set statusline=%.20F\ -\ FileType:\ %y
+set statusline+=\ \ [%-4l]/[%-4L]
+
+" 加密
+" set key=passwd
+
+" 设置 Leader 键
+let mapleader = "\<Space>"
+let maplocalleader = ";"
+
+" 垂直分屏中打开自定义 vimrc 文件
+nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
+
+" 重读自定义配置文件，使之立即生效
+nnoremap <Leader>sv :source $MYVIMRC<CR>
+
+" 保存文件
+nnoremap <Leader>w :write!<CR>
+nnoremap <Leader>wa :wa!<CR>
+nnoremap <Leader>q :q!<CR>
+nnoremap <Leader>qa :qa!<CR>
+nnoremap <Leader>wq :wq!<CR>
+nnoremap <Leader>wqa :wqa!<CR>
+
+
+" 以 root 特权保存文件
+" nnoremap <Leader>ww :w !sudo tee % > /dev/null
+" nnoremap <Leader>ww :execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+" cnoremap w!! w !sudo tee % > /dev/null
+
+
+" 窗口操作
+nnoremap <Leader>wh <C-W>h
+nnoremap <Leader>wj <C-W>j
+nnoremap <Leader>wk <C-W>k
+nnoremap <Leader>wl <C-W>l
+nnoremap <Leader>ww <C-W>w
+
+nnoremap <Leader>w= <C-W>=
+" nnoremap <Leader>w{N}_ <C-W>{N}_
+nnoremap <Leader>w_ <C-W>_
+" 窗口宽度调到最大 | 要转义
+nnoremap <Leader>w\| <C-W>\|
+
+
+nnoremap <Leader>wc <C-W>c
+nnoremap <Leader>wo <C-W>o
+
+" 新建窗口
+nnoremap <Leader>ws <C-W>s <C-W>j
+nnoremap <Leader>wv <C-W>v <C-W>l
+
+" 搜索高亮控制
+nnoremap <Leader>hls :set hlsearch<Esc>
+nnoremap <Leader>noh :set nohlsearch<Esc>
+
+nnoremap <Leader>is :set incsearch<Esc>
+nnoremap <Leader>nois :set noincsearch<Esc>
+
+" 不显示行号
+nnoremap <Leader>cp :set nonumber norelativenumber<Esc>
+
+" 显示行号
+nnoremap <Leader>sw :set number relativenumber<Esc>
+
+" 为单词加上双引号
+nnoremap <Leader>" viw<Esc>a"<Esc>hbi"<Esc>lel
+" 为单词加上单引号
+nnoremap <Leader>' viw<Esc>a'<Esc>hbi'<Esc>lel
+" 为单词加上反单引号
+nnoremap <Leader>` viw<Esc>a`<Esc>hbi`<Esc>lel
+" 为单词加上圆括号
+nnoremap <Leader>( viw<Esc>a)<Esc>hbi(<Esc>lel
+" 为单词加上方括号
+nnoremap <Leader>[ viw<Esc>a]<Esc>hbi[<Esc>lel
+" 为单词加上花括号
+nnoremap <Leader>{ viw<Esc>a}<Esc>hbi{<Esc>lel
+" 为单词加上尖括号
+nnoremap <Leader>< viw<Esc>a><Esc>hbi<<Esc>lel
+
+" 删除行末尾空格，至少两个空格的有内容的行才处理
+nnoremap <Leader>d<Space> :%s/\v(\S)\s{2,}$/\1/g<Esc>
+
+
+" 插入模式切换为普通模式
+inoremap jk <Esc>
+
+
+" 宏录制，行末尾添加两个空格
+let @a = "A\<Space>\<Space>\<Esc>"
+
+
+" 缩写
+iabbrev @@ 15521168075@163.com
+iabbrev #! #!/bin/bash
+
+augroup bufRW
+	autocmd!
+	" 自动命令 创建文件时保存
+	autocmd BufNewFile * :write
+
+	" 对 html 文件在读写时进行缩进处理
+	autocmd BufWritePre,BufRead *.html :normal gg=G
+augroup END
+
+" 自动命令组 为 shell 脚本创建时自动添加说明信息
+augroup shellScriptAutoCmds
+autocmd!
+autocmd BufNewFile *.sh exec ":call AddShellScriptHeader()"
+function! AddShellScriptHeader()
+	call setline(1,"#!/bin/bash") 
+	call setline(2,"#") 
+	call setline(3,"#********************************************************************") 
+	call setline(4,"#Author:            lx") 
+	call setline(5,"#Date:              ".strftime("%Y-%m-%d"))
+	call setline(6,"#FileName:          ".expand("%"))
+	call setline(7,"#URL:               http://github.com/lxwcd")
+	call setline(8,"#Description:       shell script") 
+	call setline(9,"#Copyright (C):     ".strftime("%Y")." All rights reserved")
+	call setline(10,"#********************************************************************") 
+	call setline(11,"")
+	call setline(12,"") 
+	call setline(13,"") 
+endfunction
+autocmd BufNewFile * :normal G
+augroup END
+
+" 自动命令 为不同语言设置注释快捷键
+augroup addComment
+	autocmd!
+	autocmd FileType cpp nnoremap <buffer><LocalLeader>c I//<Esc> 
+	autocmd FileType javascript nnoremap <buffer><LocalLeader>c I//<Esc> 
+	autocmd FileType python nnoremap <buffer><LocalLeader>c I#<Esc> 
+	autocmd FileType vim nnoremap <buffer><LocalLeader>c I" <Esc> 
+augroup END
+
+" Vimscript file settings
+augroup filetype_vim
+	autocmd!
+	autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+" 插件管理 vim-plug
+"call plug#begin('~/.vim/plugged')
+
+" Gruvbox 主题
+"Plug 'gruvbox-community/gruvbox'
+
+" markdown 插件
+"Plug 'godlygeek/tabular' | Plug 'preservim/vim-markdown'
+"Plug 'mzlogin/vim-markdown-toc'
+"Plug 'dkarter/bullets.vim'
+" install with nodejs and yarn
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
+" install without nodejs and yarn
+"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+
+"call plug#end()
+
+

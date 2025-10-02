@@ -217,8 +217,10 @@ t
 - `:h map-<buffer>` 查看帮助文档  
 - 如果打开多个文件，只想对一个文件做一些设置，则用 `<buffer` 选项  
   
-  
-  
+# 设置历史纪录的数量
+- `:set history=50`  
+它决定了你能够回溯多少个之前输入的命令。例如，如果你设置set history=50，那么你可以通过命令行模式访问最近的50个命令。  
+
 # 自动命令 和 自动命令组  
 > [自动命令](https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49338)  
 > [自动命令组](https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49339)  
@@ -264,10 +266,36 @@ augroup END
 - `:set number?` 会显示是否行号  
   
 # tab 键设置  
+
 ## tab 键用空格代替  
-- 如果设置了 `:set list`，制表符会显示出来 `^I` 符号；用空格代替制表符后 `:set expandtab`，不会显示制表符号  
+```vim
+set expandtab       " 将Tab替换为空格
+set tabstop=4       " 一个Tab等于4个空格
+set shiftwidth=4    " 自动缩进时使用4个空格
+set softtabstop=4   " 编辑时一个Tab显示为4个空格
+```
+
+- `set expandtab`：开启此选项后，每次按下Tab键时，Vim会插入空格而不是Tab字符。
+- `set tabstop=4`：指定一个Tab看起来等于4个空格。如果文件中已存在Tab字符，这个选项决定Tab字符的显示宽度。
+- `set shiftwidth=4`：设置缩进（比如使用`>>`或`<<`命令时）的宽度为4个空格，这会影响自动缩进的行为。
+- `set softtabstop=4`：与`tabstop`类似，但它影响的是编辑操作，比如按退格键删除的空格数，使得Tab操作看起来像是与实际的空格数一致。
+- 如果设置了 `:set list`，制表符会显示出来 `^I` 符号；用空格代替制表符后，不会显示制表符号  
 ![1](https://img-blog.csdnimg.cn/c5e45161ebe046ada5477cf02ced03fe.png)  
-<br/>  
+
+## 为不同文件配置不同 tab 缩进大小
+为了在不同类型的文件中使用不同的缩进设置，可以利用`autocmd`来自动检测文件类型并设置不同的缩进规则。例如：
+```vim
+" 自动检测不同文件类型并设置对应的缩进规则
+autocmd FileType c,cpp,java,python setlocal tabstop=4 shiftwidth=4 expandtab
+autocmd FileType html,css,javascript setlocal tabstop=2 shiftwidth=2 expandtab
+```
+
+## 使用`modeline`
+有些文件可能内置了缩进设置，你可以配置Vim读取这些文件的modeline信息：
+```vim
+set modeline
+```
+
   
 ## 指定 tab 键对应的空格数目  
 ![1](https://img-blog.csdnimg.cn/cd50ffbf6f674598b84acd8a39efeb76.png)  
